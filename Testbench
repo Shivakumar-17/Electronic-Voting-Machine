@@ -1,0 +1,57 @@
+module test();
+reg [4:0] sw;
+reg reset,clk;
+wire [4:0] led;
+evm m1(reset,clk,sw,led);
+initial
+clk <=1'b0;
+always #5 clk = ~clk;
+initial
+begin
+reset = 1'b1;
+#10
+reset =1'b0;
+sw=5'b00001;
+#10
+sw=5'b00010;
+#10
+sw=5'b00100;
+#10
+sw=5'b01000;
+#10
+sw=5'b10000;
+#10
+sw=5'b00011;
+#10
+sw=5'b00110;
+#10
+sw=5'b01100;
+#10
+sw=5'b11000;
+#10
+sw=5'b10001;
+#10
+sw=5'b01001;
+#10
+sw=5'b00101;
+#10
+sw=5'b10010;
+#10
+sw=5'b00101;
+#10
+sw=5'b00111;
+#10
+sw=5'b01110;
+#10
+sw=5'b11100;
+#10
+#10
+$finish;
+end
+initial
+begin
+$dumpfile("evm.vcd");
+$dumpvars;
+end 
+endmodule
+
