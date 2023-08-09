@@ -1,0 +1,58 @@
+module evm(reset,clk,sw,led);
+input [4:0] sw;
+input reset,clk;
+reg [5:0] vote1,vote2,vote3,vote4,vote5;
+output reg [4:0] led;
+always @(posedge reset)
+begin
+vote1<=6'd0;
+vote2<=6'd0;
+vote3<=6'd0;
+vote4<=6'd0;
+vote5<=6'd0;
+led<=5'd0;
+end
+always @(sw)
+begin
+case(sw)
+5'b00001: begin
+	  vote1<=vote1+1;
+	  led[0]<=1'b1;
+	  {led[1],led[2],led[3],led[4]}<=4'd0;
+	   end
+5'b00010:begin
+	 vote2<=vote2+1;
+	 led[1]<=1;
+	 {led[0],led[2],led[3],led[4]}<=4'd0;
+	 end
+5'b00100:begin
+	 vote3<=vote3+1;
+	 led[2]<=1;
+	 {led[1],led[0],led[3],led[4]}<=4'd0;
+  	 end
+5'b01000:begin
+	 vote4<=vote4+1;
+	 led[3]<=1;
+	 {led[1],led[2],led[0],led[4]}<=4'd0;
+	  end
+5'b10000:begin
+	 vote5<=vote5+1;
+	 led[4]<=1;
+	 {led[1],led[2],led[3],led[0]}<=4'd0;
+	 end
+default:begin
+	vote1<=vote1;
+	vote2<=vote2;
+	vote3<=vote3;
+	vote4<=vote4;
+	vote5<=vote5;
+	{led[0],led[1],led[2],led[3],led[4]}<=5'd0;
+	end
+endcase
+end
+always @(posedge clk)
+begin
+$display("time= %d,vote1=%d,vote2=%d,vote3=%d,vote4=%d,vote5=%d",$time,vote1,vote2,vote3,vote4,vote5);
+end
+endmodule
+
