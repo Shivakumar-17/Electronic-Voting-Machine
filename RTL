@@ -1,7 +1,7 @@
 module evm(reset,clk,sw,led);
 input [4:0] sw;
 input reset,clk;
-reg [5:0] vote1,vote2,vote3,vote4,vote5;
+reg [5:0] vote1,vote2,vote3,vote4,vote5,Total_Votes,Valid_Votes;
 output reg [4:0] led;
 always @(posedge reset)
 begin
@@ -11,6 +11,8 @@ vote3<=6'd0;
 vote4<=6'd0;
 vote5<=6'd0;
 led<=5'd0;
+Total_Votes<=6'd0;
+Valid_Votes<=6'd0;
 end
 always @(sw)
 begin
@@ -50,9 +52,14 @@ default:begin
 	end
 endcase
 end
+always  @(sw)
+begin
+Total_Votes <= Total_Votes+1;
+Valid_Votes <= (vote1+vote2+vote3+vote4+vote5);
+end
 always @(posedge clk)
 begin
-$display("time= %d,vote1=%d,vote2=%d,vote3=%d,vote4=%d,vote5=%d",$time,vote1,vote2,vote3,vote4,vote5);
+$display("time= %d,vote1=%d,vote2=%d,vote3=%d,vote4=%d,vote5=%d,Total_Votes=%d,Valid_Votes=%d",$time,vote1,vote2,vote3,vote4,vote5,Total_Votes,Valid_Votes);
 end
 endmodule
 
